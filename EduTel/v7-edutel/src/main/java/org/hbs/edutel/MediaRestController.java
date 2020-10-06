@@ -18,16 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bouncycastle.util.encoders.Base64;
 import org.hbs.core.beans.UserFormBean;
+import org.hbs.core.beans.model.IUsersBase.EUserStatus;
 import org.hbs.core.beans.model.IUsersBase.EUserType;
 import org.hbs.core.beans.model.Roles;
 import org.hbs.core.beans.model.UserRoles;
-import org.hbs.core.beans.model.Users;
 import org.hbs.core.beans.model.UsersMedia;
-import org.hbs.core.beans.path.IPathAdmin.ESecurity;
-import org.hbs.core.security.resource.IPathBase.EFormAction;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
-import org.hbs.core.util.ServerUtilFactory;
 import org.hbs.edutel.model.DataTable;
 import org.hbs.edutel.model.IVideoAttachments;
 import org.hbs.edutel.model.Video;
@@ -370,8 +367,9 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 		{
 			ufBean.formUser.createdUserAndProducerInfo(auth);
 			ufBean.formUser.setStatus(true);
+			ufBean.formUser.setUserStatus(EUserStatus.Activated);
 			ufBean.formUser.setUserPwdModFlag(false);
-			ufBean.formUser.setUserPwd(new BCryptPasswordEncoder().encode("Test@1234"));
+			ufBean.formUser.setUserPwd("$2a$10$z/h4gKgrVrSp9C1LQhxpPec0TT/EIa1FyDMKvP/xe7NOCnG3Qiv8q");
 			ufBean.formUser.getBusinessKey();// Initialize Primary Key
 
 			for (UsersMedia _UM : ufBean.formUser.getMediaList())

@@ -58,7 +58,7 @@ public class Roles extends ProducersBase implements IRoles, EBusinessKey
 	public Roles(String roleId)
 	{
 		super();
-		this.roleId = getBusinessKey();
+		this.roleId = roleId;
 	}
 
 	@Override
