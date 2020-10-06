@@ -2,7 +2,6 @@ package org.hbs.edutel.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +82,10 @@ public class DataTable implements Serializable
 		object = request.getParameter("sort[field]");
 
 		if (CommonValidator.isNotNullNotEmpty(object))
+		{
 			meta.field = object.toString();
+			meta.field = meta.field.replaceAll("ByTimeZone", "");
+		}
 
 		// Search Query
 		object = request.getParameter("query[generalSearch]");

@@ -1,83 +1,101 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!--
-Template Name: Metronic - Bootstrap 4 HTML, React, Angular 9 & VueJS Admin Dashboard Theme
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: https://1.envato.market/EA4JP
-Renew Support: https://1.envato.market/EA4JP
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<html lang="en">
-<!--begin::Head-->
-<head>
-<base href="../../">
-<meta charset="utf-8" />
-<title>EduTel Videos Upload | EduTel Academy</title>
-<meta name="description" content="Uppy file upload plugin" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<link rel="canonical" href="https://keenthemes.com/metronic" />
-<!--begin::Fonts-->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-<!--end::Fonts-->
-<!--begin::Page Custom Styles(used by this page)-->
-<script>
-	var root = "${pageContext.request.contextPath}";
-</script>
-<link href="${pageContext.request.contextPath}/assets/plugins/custom/uppy/uppy.bundle.css" rel="stylesheet" type="text/css" />
-<!--end::Page Custom Styles-->
-<!--begin::Global Theme Styles(used by all pages)-->
-<link href="${pageContext.request.contextPath}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath}/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath}/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-<!--end::Global Theme Styles-->
-<!--begin::Layout Themes(used by all pages)-->
-<link href="${pageContext.request.contextPath}/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath}/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath}/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath}/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
-<!--end::Layout Themes-->
-</head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_body">
-	<!--begin::Main-->
-	<!--begin::Header Mobile-->
-	<!--end::Header Mobile-->
-	<div class="d-flex flex-column flex-root">
-		<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-			<!--begin::Content-->
-			<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-				<!--begin::Entry-->
-				<div class="d-flex flex-column-fluid">
-					<!--begin::Container-->
-					<div class="container">
-						<div class="card card-custom gutter-b">
-							<div class="card-body">
+
+<div id="kt_header" class="header header-fixed">
+	<!--begin::Container-->
+	<div class="container-fluid d-flex align-items-stretch justify-content-between">
+		<div class="topbar">
+			<div class="topbar-item">
+				<div class="alert-icon">
+					<span class="svg-icon svg-icon-primary svg-icon-xl"> <!--begin::Svg Icon | path:${pageContext.request.contextPath}/assets/media/svg/icons/Tools/Compass.svg--> <svg
+							xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<rect x="0" y="0" width="24" height="24" />
+													<path
+								d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z"
+								fill="#000000" opacity="0.3" />
+													<path
+								d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z"
+								fill="#000000" fill-rule="nonzero" />
+												</g>
+											</svg> <!--end::Svg Icon-->
+					</span>
+				</div>
+				<div class="alert-text">
+					This Panel is used to view all EduTel Tutor Videos in subject wise. <br />End user can view the videos online to educate them self anywhere, at any time.
+				</div>
+			</div>
+			<!--end::User-->
+		</div>
+		<!--end::Topbar-->
+	</div>
+	<!--end::Container-->
+</div>
+<!--end::Header-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+	<!--begin::Subheader-->
+	<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+		<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+			<!--begin::Info-->
+			<div class="d-flex align-items-center flex-wrap mr-1">
+				<!--begin::Page Heading-->
+				<div class="d-flex align-items-baseline flex-wrap mr-5">
+					<!--begin::Page Title-->
+					<h5 class="text-dark font-weight-bold my-1 mr-5">Tutor Videos View</h5>
+					<!--end::Page Title-->
+					<!--begin::Breadcrumb-->
+					<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+						<li class="breadcrumb-item"><a href="javascript:void()" class="text-muted">Offline Videos</a></li>
+					</ul>
+					<!--end::Breadcrumb-->
+				</div>
+				<!--end::Page Heading-->
+			</div>
+			<!--end::Info-->
+			<!--begin::Toolbar-->
+			<!--end::Toolbar-->
+		</div>
+	</div>
+	<!--end::Subheader-->
+	<!--begin::Entry-->
+	<div class="d-flex flex-column-fluid align-items-baseline">
+		<!--begin::Container-->
+		<div class="container">
+			<!--begin::Row-->
+			<div class="row">
+				<div class="col-lg-12">
+					<!--begin::Card-->
+					<div class="card card-custom card-stretch">
+						<div class="card-header">
+							<div class="card-title">
+								<h3 class="card-label">Zoom | Teams | Skype Offline Videos</h3>
+							</div>
+						</div>
+						<!--begin::Form-->
+						<div class="card-body">
 								<ul class="nav nav-tabs nav-tabs-line">
 									<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Maths</a></li>
 									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Physics</a></li>
 									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3">Chemistry</a></li>
-									<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> Biology </a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" data-toggle="tab" href="#kt_tab_pane_4">Botony</a> <a class="dropdown-item" data-toggle="tab" href="#kt_tab_pane_5">Zoology</a>
-										</div></li>
-									<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_6">Computer</a></li>
+									
+									<c:if test="${subjects!='C' || subjects=='A'}">
+										<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4">Botony</a></li>
+										<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_5">Zoology</a></li>
+									</c:if>
+									<c:if test="${subjects=='C' || subjects=='A'}">
+										<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_tab_pane_6">Computer</a></li>
+									</c:if>
 								</ul>
 								<div class="tab-content mt-5" id="myTabContent">
 									<div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Maths'}">
 												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
+													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
 													</a></li>
 													<li class="navi navi-separator my-3"></li>
 												</ul>
@@ -88,8 +106,8 @@ License: You must have a valid license purchased only from themeforest(the above
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Physics'}">
 												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
+													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
 													</a></li>
 													<li class="navi navi-separator my-3"></li>
 												</ul>
@@ -100,162 +118,80 @@ License: You must have a valid license purchased only from themeforest(the above
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Chemistry'}">
 												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
+													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
 													</a></li>
 													<li class="navi navi-separator my-3"></li>
 												</ul>
 											</c:if>
 										</c:forEach>
 									</div>
-									<div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
-										<c:forEach items="${videoList}" var="video">
-											<c:if test="${video.subject=='Botony'}">
-												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
-													</a></li>
-													<li class="navi navi-separator my-3"></li>
-												</ul>
-											</c:if>
-										</c:forEach>
-									</div>
-									<div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel" aria-labelledby="kt_tab_pane_5">
-										<c:forEach items="${videoList}" var="video">
-											<c:if test="${video.subject=='Zoology'}">
-												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
-													</a></li>
-													<li class="navi navi-separator my-3"></li>
-												</ul>
-											</c:if>
-										</c:forEach>
-									</div>
-									<div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel" aria-labelledby="kt_tab_pane_6">
-										<c:forEach items="${videoList}" var="video">
-											<c:if test="${video.subject=='ComputerScience'}">
-												<ul class="navi navi-hover">
-													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span class="navi-icon"><i
-																class="fas fa-video text-danger"></i></span> <span class="navi-text">${video.displayName}</span><span class="navi-label"></span>
-													</a></li>
-													<li class="navi navi-separator my-3"></li>
-												</ul>
-											</c:if>
-										</c:forEach>
-									</div>
+									<c:if test="${subjects!='C' || subjects=='A'}">
+										<div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
+											<c:forEach items="${videoList}" var="video">
+												<c:if test="${video.subject=='Botony'}">
+													<ul class="navi navi-hover">
+														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
+														</a></li>
+														<li class="navi navi-separator my-3"></li>
+													</ul>
+												</c:if>
+											</c:forEach>
+										</div>
+										<div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel" aria-labelledby="kt_tab_pane_5">
+											<c:forEach items="${videoList}" var="video">
+												<c:if test="${video.subject=='Zoology'}">
+													<ul class="navi navi-hover">
+														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
+														</a></li>
+														<li class="navi navi-separator my-3"></li>
+													</ul>
+												</c:if>
+											</c:forEach>
+										</div>
+									</c:if>
+									<c:if test="${subjects=='C' || subjects=='A'}">
+										<div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel" aria-labelledby="kt_tab_pane_6">
+											<c:forEach items="${videoList}" var="video">
+												<c:if test="${video.subject=='ComputerScience'}">
+													<ul class="navi navi-hover">
+														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
+																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
+														</a></li>
+														<li class="navi navi-separator my-3"></li>
+													</ul>
+												</c:if>
+											</c:forEach>
+										</div>
+									</c:if>
 								</div>
-							</div>
 						</div>
+						<!--end::Card Body-->
 					</div>
+					<!--end::Card-->
 				</div>
-				<div class="modal fade" id="videoModelId" tabindex="-1" role="dialog">
-					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="videoTitleId"></h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<i aria-hidden="true" class="ki ki-close"></i>
-								</button>
-							</div>
-							<div class="modal-body" id="videoBodyId">
-								<p>Your Tutor Video Displayed Over Here...</p>
-							</div>
-						</div>
+				<!--end::Row-->
+			</div>
+			<!--end::Container-->
+		</div>
+		<!--end::Entry-->
+		<div class="modal fade" id="videoModelId" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="videoTitleId"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<i aria-hidden="true" class="ki ki-close"></i>
+						</button>
+					</div>
+					<div class="modal-body" id="videoBodyId">
+						<p>Your Tutor Video Displayed Over Here...</p>
 					</div>
 				</div>
 			</div>
-			<!--end::Wrapper-->
 		</div>
 	</div>
-	<script>
-		var KTAppSettings = {
-			"breakpoints" : {
-				"sm" : 576,
-				"md" : 768,
-				"lg" : 992,
-				"xl" : 1200,
-				"xxl" : 1400
-			},
-			"colors" : {
-				"theme" : {
-					"base" : {
-						"white" : "#ffffff",
-						"primary" : "#3699FF",
-						"secondary" : "#E5EAEE",
-						"success" : "#1BC5BD",
-						"info" : "#8950FC",
-						"warning" : "#FFA800",
-						"danger" : "#F64E60",
-						"light" : "#E4E6EF",
-						"dark" : "#181C32"
-					},
-					"light" : {
-						"white" : "#ffffff",
-						"primary" : "#E1F0FF",
-						"secondary" : "#EBEDF3",
-						"success" : "#C9F7F5",
-						"info" : "#EEE5FF",
-						"warning" : "#FFF4DE",
-						"danger" : "#FFE2E5",
-						"light" : "#F3F6F9",
-						"dark" : "#D6D6E0"
-					},
-					"inverse" : {
-						"white" : "#ffffff",
-						"primary" : "#ffffff",
-						"secondary" : "#3F4254",
-						"success" : "#ffffff",
-						"info" : "#ffffff",
-						"warning" : "#ffffff",
-						"danger" : "#ffffff",
-						"light" : "#464E5F",
-						"dark" : "#ffffff"
-					}
-				},
-				"gray" : {
-					"gray-100" : "#F3F6F9",
-					"gray-200" : "#EBEDF3",
-					"gray-300" : "#E4E6EF",
-					"gray-400" : "#D1D3E0",
-					"gray-500" : "#B5B5C3",
-					"gray-600" : "#7E8299",
-					"gray-700" : "#5E6278",
-					"gray-800" : "#3F4254",
-					"gray-900" : "#181C32"
-				}
-			},
-			"font-family" : "Poppins"
-		};
-
-		function openVideo(videoId, attachmentId, videoName, videoSubject) {
-			// AJAX request
-			$.ajax({
-				url : root + '/viewVideo/' + videoId + "/" + attachmentId,
-				type : 'post',
-				headers : {
-					"Authorization" : 'Bearer ' + access_token
-				},
-				contentType : "application/json",
-				cache : false,
-				timeout : 600000,
-				success : function(response) {
-					// Add response in Modal body
-					$('.modal-body').html(response);
-
-					// Display Modal
-					$('#videoTitleId').text(videoSubject + ' : ' + videoName);
-					$('#videoModelId').modal({
-						show : true
-					});
-				}
-			});
-		}
-	</script>
-	<script src="${pageContext.request.contextPath}/assets/js/temp_token.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/plugins/global/plugins.bundle.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/scripts.bundle.js"></script>
-</body>
-<!--end::Body-->
-</html>
+	<!--end::Content-->
+</div>

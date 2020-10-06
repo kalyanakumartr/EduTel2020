@@ -16,8 +16,18 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bouncycastle.util.encoders.Base64;
+import org.hbs.core.beans.UserFormBean;
+import org.hbs.core.beans.model.IUsersBase.EUserType;
+import org.hbs.core.beans.model.Roles;
+import org.hbs.core.beans.model.UserRoles;
+import org.hbs.core.beans.model.Users;
+import org.hbs.core.beans.model.UsersMedia;
+import org.hbs.core.beans.path.IPathAdmin.ESecurity;
+import org.hbs.core.security.resource.IPathBase.EFormAction;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
+import org.hbs.core.util.ServerUtilFactory;
 import org.hbs.edutel.model.DataTable;
 import org.hbs.edutel.model.IVideoAttachments;
 import org.hbs.edutel.model.Video;
@@ -26,9 +36,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -207,18 +219,21 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 	}
 
 	@Override
-	public ModelAndView endUserViewVideo(Authentication auth)
+	public ModelAndView endUserViewVideo(Authentication auth, String accessToken, String subjects, String whom)
 	{
-		ModelAndView modelView = new ModelAndView(ENDUSERVIEW_VIDEOS_PAGE);
+		ModelAndView modelView = new ModelAndView(ENDUSER_VIDEOS_PAGE);
 		try
 		{
 			modelView.addObject("videoList", videoBo.allVideo());
+			modelView.addObject("subjects", subjects);
+			modelView.addObject("view", whom);
+			modelView.addObject("accessToken", new String(Base64.decode(accessToken)));
 
 			return modelView;
 		}
 		catch (Exception excep)
 		{
-			return new ModelAndView(ENDUSERVIEW_VIDEOS_PAGE);
+			return new ModelAndView(ENDUSER_VIDEOS_PAGE);
 		}
 		finally
 		{
@@ -262,20 +277,50 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 	}
 
 	@Override
-	public ResponseEntity<byte[]> streamVideo(final HttpServletResponse response, String videoPath, String videoName)
+	public ResponseEntity<byte[]> streamVideo(final HttpServletResponse response, @RequestHeader(value = "Range", required = false) String range, String videoPath, String videoName)
 	{
-		Long fileSize;
 		long rangeStart = 0;
+		long rangeEnd;
+		byte[] data;
+		Long fileSize = 0l;
 		try
 		{
 			fileSize = getFileSize(videoPath, videoName);
-			return ResponseEntity.status(HttpStatus.OK).header(CONTENT_TYPE, VIDEO_CONTENT).header(CONTENT_LENGTH, String.valueOf(fileSize))
-					.body(readByteRange(videoPath, videoName, rangeStart, fileSize - 1));
+			if (range == null)
+			{
+				return ResponseEntity.status(HttpStatus.OK)//
+						.header(CONTENT_TYPE, VIDEO_CONTENT)//
+						.header(CONTENT_LENGTH, String.valueOf(fileSize))//
+						.body(readByteRange(videoPath, videoName, rangeStart, fileSize - 1));
+			}
+			String[] ranges = range.split("-");
+			rangeStart = Long.parseLong(ranges[0].substring(6)); // bytes=0-
+			if (ranges.length > 1)
+			{
+				rangeEnd = Long.parseLong(ranges[1]);
+			}
+			else
+			{
+				rangeEnd = fileSize - 1;
+			}
+			if (fileSize < rangeEnd)
+			{
+				rangeEnd = fileSize - 1;
+			}
+			data = readByteRange(videoPath, videoName, rangeStart, rangeEnd);
 		}
 		catch (IOException e)
 		{
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+
+		String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
+		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)//
+				.header(CONTENT_TYPE, VIDEO_CONTENT)//
+				.header(ACCEPT_RANGES, BYTES)//
+				.header(CONTENT_LENGTH, contentLength)//
+				.header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize)//
+				.body(data);
 	}
 
 	private String getFilePath(String videoPath)
@@ -315,6 +360,44 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 			byte[] result = new byte[(int) (end - start) + 1];
 			System.arraycopy(bufferedOutputStream.toByteArray(), (int) start, result, 0, result.length);
 			return result;
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> addEduTelUser(Authentication auth, UserFormBean ufBean)
+	{
+		try
+		{
+			ufBean.formUser.createdUserAndProducerInfo(auth);
+			ufBean.formUser.setStatus(true);
+			ufBean.formUser.setUserPwdModFlag(false);
+			ufBean.formUser.setUserPwd(new BCryptPasswordEncoder().encode("Test@1234"));
+			ufBean.formUser.getBusinessKey();// Initialize Primary Key
+
+			for (UsersMedia _UM : ufBean.formUser.getMediaList())
+			{
+				_UM.setUsers(ufBean.formUser);
+			}
+
+			UserRoles _UR = new UserRoles();
+			_UR.setUsers(ufBean.formUser);
+			
+			if(ufBean.formUser.getUserType() == EUserType.Consumer)
+				_UR.setRoles(new Roles(ERole.Consumer.name()));
+			else
+				_UR.setRoles(new Roles(ERole.Employee.name()));
+			
+			ufBean.formUser.getUserRoleses().add(_UR);
+
+			ufBean.user = videoBo.saveUser(ufBean.formUser);
+			
+			return new ResponseEntity<>(EReturn.Success, HttpStatus.OK);
+			
+		}
+		catch (Exception excep)
+		{
+			ufBean.messageCode = excep.getLocalizedMessage();
+			return new ResponseEntity<>(EReturn.Failure, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

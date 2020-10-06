@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hbs.core.beans.UserFormBean;
 import org.hbs.edutel.beans.path.IPathEduTel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +27,11 @@ public interface IMediaRestController extends IPathEduTel
 	@RequestMapping(value = TEMP_UPLOAD)
 	@PreAuthorize(HAS_AUTHORITY_BOTH)
 	ResponseEntity<?> processUpload(@PathVariable String random, @RequestParam("files") MultipartFile[] files);
+	
+	@PostMapping
+	@RequestMapping(value = ADD_EDUTEL_USER, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize(HAS_AUTHORITY_BOTH)
+	ResponseEntity<?> addEduTelUser(Authentication auth, @RequestBody UserFormBean ufBean);
 
 	@PostMapping
 	@RequestMapping(value = ADD_VIDEOS, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +56,7 @@ public interface IMediaRestController extends IPathEduTel
 
 	@PostMapping
 	@RequestMapping(value = VIEW_VIDEOS, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize(HAS_AUTHORITY_BOTH)
+	@PreAuthorize(HAS_ALL_AUTHORITY)
 	ModelAndView viewVideo(Authentication auth, @PathVariable("videoId") String videoId, @PathVariable("attachmentId") long attachmentId);
 
 	@PostMapping
@@ -59,10 +67,10 @@ public interface IMediaRestController extends IPathEduTel
 	@GetMapping
 	@RequestMapping(value = STREAM_VIDEOS, produces = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize(HAS_AUTHORITY_BOTH)
-	ResponseEntity<byte[]> streamVideo(HttpServletResponse response, @PathVariable("videoPath") String videoPath, @PathVariable("videoName") String videoName);
+	ResponseEntity<byte[]> streamVideo(HttpServletResponse response, @RequestHeader(value = "Range", required = false) String range, @PathVariable("videoPath") String videoPath, @PathVariable("videoName") String videoName);
 
 	@PostMapping
 	@RequestMapping(value = ENDUSER_VIDEOS, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize(HAS_AUTHORITY_BOTH)
-	ModelAndView endUserViewVideo(Authentication auth);
+	//@PreAuthorize(HAS_AUTHORITY_BOTH)
+	ModelAndView endUserViewVideo(Authentication auth, @PathVariable("accessToken") String accessToken, @PathVariable("subjects") String subjects, @PathVariable("whom") String whom);
 }

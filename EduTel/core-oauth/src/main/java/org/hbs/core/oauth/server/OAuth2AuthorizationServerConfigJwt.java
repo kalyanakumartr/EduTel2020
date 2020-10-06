@@ -65,9 +65,8 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 				// .authorities(ERole.Administrator.name().toUpperCase(),
 				// ERole.Supervisor.name().toUpperCase(), ERole.User.name().toUpperCase())//
 				.scopes(READ, WRITE, TRUST)//
-				.accessTokenValiditySeconds(THIRTY_DAYS)// For Testing And Development Set for 30
-														// Days
-				.refreshTokenValiditySeconds(THIRTY_DAYS);
+				.accessTokenValiditySeconds(FIFETEEN_MINUTES)// For Testing And Development Set for 30_Days
+				.refreshTokenValiditySeconds(FIFETEEN_MINUTES);
 	} // @formatter:on
 
 	@Override

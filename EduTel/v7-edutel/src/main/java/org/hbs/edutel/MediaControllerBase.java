@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class MediaControllerBase
 {
-
+	@Value("${edutel.website.url}")
+	protected String	websiteURL;
+	
 	@Value("${server.temp.directory}")
 	protected String	serverTempDirectory;
 	

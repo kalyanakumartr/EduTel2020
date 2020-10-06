@@ -24,5 +24,8 @@ public interface VideoDao extends PagingAndSortingRepository<Video, String>
 
 	@Query("select V.displayName FROM Video V Where 1=1 AND V.displayName = :displayName AND V.subject = :subject")
 	List<String> checkVideoName(@Param("displayName") String displayName, @Param("subject") String subject);
+	
+	@Query("select V FROM Video V WHERE V.status=true Order By V.modifiedDate Desc")
+	List<Video> getVideoList();
 
 }

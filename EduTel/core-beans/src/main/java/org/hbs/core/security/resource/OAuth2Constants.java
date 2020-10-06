@@ -23,6 +23,8 @@ public interface OAuth2Constants
 	String	TRUST							= "trust";
 	String	WRITE							= "write";
 	int		THIRTY_DAYS						= 60 * 60 * 24 * 30;
+	int		FIVE_MINUTES					= 60 * 5;
+	int		FIFETEEN_MINUTES				= 60 * 15;
 	int		SIXTY_MINUTES					= 60 * 60;
 	int		MAX_LOGIN_ATTEMPT				= 3;
 }

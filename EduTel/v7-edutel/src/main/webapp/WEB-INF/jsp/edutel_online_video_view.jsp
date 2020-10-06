@@ -200,7 +200,6 @@ video::-webkit-media-controls-panel {
 	</script>
 	<!--end::Global Config-->
 	<!--begin::Global Theme Bundle(used by all pages)-->
-	<script src="${pageContext.request.contextPath}/assets/js/temp_token.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/plugins/global/plugins.bundle.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/scripts.bundle.js"></script>

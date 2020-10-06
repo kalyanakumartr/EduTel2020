@@ -193,11 +193,10 @@ public interface IPath extends IPathBase
 	public static final String	HAS_AUTHORITY_SUPERADMIN						= "hasAuthority('SUPERADMINROLE')";
 	public static final String	HAS_AUTHORITY_ADMINISTRATOR						= "hasAuthority('ADMINISTRATOR')";
 	public static final String	HAS_AUTHORITY_EMPLOYEE							= "hasAuthority('EMPLOYEE')";
-	public static final String	HAS_AUTHORITY_USER								= "hasAuthority('USER')";
+	public static final String	HAS_AUTHORITY_USER								= "hasAuthority('CONSUMER')";													// Consumer
 	public static final String	HAS_AUTHORITY_SUPERADMIN_OR_ADMIN				= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN;
-	public static final String	HAS_AUTHORITY_SUPERADMIN_OR_ADMIN_OR_EMPLOYEE	= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN + " or " + HAS_AUTHORITY_EMPLOYEE;
+	public static final String	HAS_AUTHORITY_SUPERADMIN_OR_ADMIN_OR_EMPLOYEE	= HAS_AUTHORITY_SUPERADMIN_OR_ADMIN + " or " + HAS_AUTHORITY_EMPLOYEE;
 	public static final String	HAS_AUTHORITY_BOTH								= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
-	public static final String	HAS_ALL_AUTHORITY								= HAS_AUTHORITY_SUPERADMIN + " or " + HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or "
-			+ HAS_AUTHORITY_USER;
+	public static final String	HAS_ALL_AUTHORITY								= HAS_AUTHORITY_SUPERADMIN_OR_ADMIN_OR_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
 
 }

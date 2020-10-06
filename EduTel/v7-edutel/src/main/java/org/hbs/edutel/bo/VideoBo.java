@@ -6,6 +6,7 @@ import java.security.InvalidKeyException;
 import java.util.List;
 
 import org.apache.kafka.common.errors.InvalidRequestException;
+import org.hbs.core.beans.model.Users;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.edutel.VideoFormBean;
 import org.hbs.edutel.model.DataTable;
@@ -31,4 +32,6 @@ public interface VideoBo extends Serializable
 	long searchVideoCount(DataTable dataTable);
 
 	Video getVideoById(VideoFormBean vfBean);
+
+	Users saveUser(Users formUser);
 }

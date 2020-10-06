@@ -1,5 +1,6 @@
 package org.hbs.edutel;
 
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,6 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 	@Override
 	public ModelAndView preAddVideo()
 	{
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>preSearchVideo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		ModelAndView modelView = new ModelAndView(ADD_VIDEOS_PAGE);
 		modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
 		modelView.addObject("mediaForm", new VideoFormBean());
@@ -26,11 +26,15 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 	}
 
 	@Override
-	public ModelAndView preSearchVideo()
+	public ModelAndView preSearchVideo(String accessToken)
 	{
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>preSearchVideo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		ModelAndView modelView = new ModelAndView(SEARCH_VIDEOS_PAGE);
 		modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
+		modelView.addObject("accessToken", new String(Base64.decode(accessToken)));
+		modelView.addObject("tokenBinder", accessToken);
+		modelView.addObject("dashBoardURL", websiteURL + "/dashBoardEmployee.do");
+		modelView.addObject("logoutURL", websiteURL + "/logoutPage.do");
+		modelView.addObject("preSearchVideoURL", "/preSearchVideo/" + accessToken);
 		return modelView;
 	}
 
@@ -40,7 +44,6 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 		ModelAndView modelView = new ModelAndView("redirect:" + ADD_VIDEOS_PAGE);
 		try
 		{
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>preUpdateVideo<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
 			modelView.addObject("mediaForm", new VideoFormBean(videoBo.getVideoById(vfBean)));
 
@@ -56,6 +59,29 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 		finally
 		{
 			// logger.info("preUpdateVideo ends ::: ");
+		}
+	}
+
+	@Override
+	public ModelAndView viewEndUserVideo(String accessToken, String subjects, String whom)
+	{
+		ModelAndView modelView = new ModelAndView(VIEWENDUSER_VIDEOS_PAGE);
+		try
+		{
+			modelView.addObject("dashBoardURL", websiteURL + "/dashBoardStudent.do?p=1");
+			modelView.addObject("logoutURL", websiteURL + "/logoutPage.do");
+			modelView.addObject("endUserVideoURL", "/endUserVideo/" + accessToken + "/" + subjects + "/" + whom);
+			modelView.addObject("accessToken", new String(Base64.decode(accessToken)));
+
+			return modelView;
+		}
+		catch (Exception excep)
+		{
+			return new ModelAndView(VIEWENDUSER_VIDEOS_PAGE);
+		}
+		finally
+		{
+
 		}
 	}
 

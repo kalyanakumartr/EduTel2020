@@ -2,7 +2,6 @@
 // Class definition
 var KTDatatableVideo = function() {
     // Private functions
-
     // basic videoFn
     var videoFn = function() {
 
@@ -55,6 +54,7 @@ var KTDatatableVideo = function() {
                 title: 'Display Name',
                 autoHide: false,
                 width: 175,
+                orderable: false,
                 template: function(row)
                 {
                 	return '<div><i class="fa fa-envelope-open-text" data-toggle="tooltip"  data-placement="bottom" title="'+ row.description +'"></i>&nbsp;&nbsp;&nbsp;' + row.displayName + '</div>';
@@ -63,21 +63,25 @@ var KTDatatableVideo = function() {
                 field: 'subject',
                 title: 'Subject',
                 width: 125,
+                orderable: false,
                 autoHide: false,
             }, {
                 field: 'tutorName',
                 title: 'Tutor Name',
                 width: 125,
+                orderable: false,
                 autoHide: false,
             }, {
                 field: 'byUser.modifiedUserName',
                 title: 'Modified User',
                 width: 125,
+                orderable: false,
                 autoHide: false,
             }, {
                 field: 'modifiedDateByTimeZone',
                 title: 'Modified Date',
                 width: 125,
+                orderable: true,
                 autoHide: false,
             }, {
                 field: 'View',
@@ -92,7 +96,7 @@ var KTDatatableVideo = function() {
                 title: 'Status',
                 autoHide: false,
                 width: 60,
-                
+                orderable: false,
                 // callback function support for column rendering
                 template: function(row) {
                     var status = {
@@ -116,19 +120,20 @@ var KTDatatableVideo = function() {
                 overflow: 'visible',
                 autoHide: false,
                 template: function(row) {
-                    return '\
-                        <a href="javascript:updateVideo(\''+ row.videoId +'\')" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
-                            <span class="svg-icon svg-icon-md">\
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                        <rect x="0" y="0" width="24" height="24"/>\
-                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                    </g>\
-                                </svg>\
-                            </span>\
-                        </a>\
-                        <a href="javascript:deleteVideo(\''+ row.videoId +'\',\''+ row.displayName +'\')" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                	
+                	//\
+                    //<a href="javascript:updateVideo(\''+ row.videoId +'\')" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                    //<span class="svg-icon svg-icon-md">\
+                       // <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                           // <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                             //   <rect x="0" y="0" width="24" height="24"/>\
+                              //  <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                              //  <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                           // </g>\
+                       // </svg>\
+                   // </span>\
+                //</a>\
+                    return '\<a href="javascript:deleteVideo(\''+ row.videoId +'\',\''+ row.displayName +'\')" class="btn btn-sm btn-clean btn-icon" title="Delete">\
                             <span class="svg-icon svg-icon-md">\
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -232,13 +237,21 @@ var KTDatatableVideo = function() {
 var videoDataTable ;
 jQuery(document).ready(function() {
 	videoDataTable = KTDatatableVideo.init();
-	
+	// Check browser support
+	if (typeof(Storage) !== "undefined") {
+	  // Store
+	  localStorage.setItem("accessToken", access_token);
+	  localStorage.setItem("tokenBinder", token_binder);
+	} else {
+	  alert("Sorry, your browser does not support. please use chrome browser...");
+	}
 });
+
 function endUserVideo()
 {
 	 // AJAX request
 	$.ajax({
-		url: root + '/endUserVideo',
+		url: root + '/endUserVideo/' + token_binder + "/A/A",
 		type: 'post',
 		headers : {
 			"Authorization" : 'Bearer ' + access_token
@@ -246,13 +259,29 @@ function endUserVideo()
 		contentType : "application/json",
 		cache : false,
 		timeout : 600000,
-		success: function(response){ 
-			// Add response in Div body
-			$('#viewVideoDivId').html(response);
+		success: function(response){
+			$('#kt_wrapper').html(response);
 		}
 	});
 }
 
+function addVideo()
+{
+	 // AJAX request
+	$.ajax({
+		url: root + '/preAddVideo',
+		type: 'get',
+		headers : {
+			"Authorization" : 'Bearer ' + access_token
+		},
+		contentType : "application/json",
+		cache : false,
+		timeout : 600000,
+		success: function(response){
+			$('#kt_wrapper').html(response);
+		}
+	});
+}
 
 function openVideo(videoId, attachmentId , videoName, videoSubject)
 {

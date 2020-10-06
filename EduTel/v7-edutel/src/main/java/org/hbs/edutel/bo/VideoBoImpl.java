@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.kafka.common.errors.InvalidRequestException;
+import org.hbs.core.beans.model.Users;
+import org.hbs.core.dao.UserDao;
 import org.hbs.core.security.resource.IPath;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
@@ -45,6 +47,9 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 
 	@Autowired
 	protected VideoDao			videoDao;
+	
+	@Autowired
+	protected UserDao			userDao;
 
 	@Override
 	public EnumInterface blockVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException
@@ -195,7 +200,6 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 		return srcFolder;
 	}
 
-
 	@Override
 	public EnumInterface updateVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException, InvalidKeyException
 	{
@@ -233,7 +237,13 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 	@Override
 	public List<Video> allVideo() throws InvalidRequestException
 	{
-		return (List<Video>) videoDao.findAll();
+		return videoDao.getVideoList();
+	}
+
+	@Override
+	public Users saveUser(Users formUser)
+	{
+		return userDao.save(formUser);
 	}
 
 }
