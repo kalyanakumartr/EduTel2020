@@ -62,10 +62,19 @@ video {
 }
 </style>
 </head>
+<!--end::Head-->
+<!--begin::Body-->
 <body id="kt_body">
+	<!--begin::Page-->
+	<!--end::Aside-->
+	<!--begin::Wrapper-->
+	<!--begin::Content-->
+	<!--begin::Subheader-->
+	<!--end::Subheader-->
+	<!--begin::Entry-->
 	<div class="d-flex flex-column-fluid">
 		<c:set var="first" value="true" scope="page" />
-		<video id="tutorVideoId" controls autoplay="autoplay" controlsList="nodownload" >
+		<video id="tutorVideoId" controls autoplay="autoplay" controlsList="nodownload" oncontextmenu="return false;" >
 			<c:forEach items="${videoList}" var="video">
 				<c:if test="${first}">
 					<source class="active" src="${pageContext.request.contextPath}/streamVideo/${video.uploadFileFolderURL}/${video.uploadFileName}" type="video/mp4" class>
@@ -77,6 +86,23 @@ video {
 			</c:forEach>
 		</video>
 	</div>
+	<!--end::Entry-->
+	<!--end::Content-->
+	<!--begin::Footer-->
+	<!--end::Footer-->
+	<!--end::Wrapper-->
+	<!--end::Page-->
+	<!--end::Main-->
+	<!-- begin::User Panel-->
+	<!-- end::User Panel-->
+	<!--begin::Quick Cart-->
+	<!--end::Quick Cart-->
+	<!--begin::Quick Panel-->
+	<!--end::Quick Panel-->
+	<!--begin::Chat Panel-->
+	<!--end::Chat Panel-->
+	<!--begin::Scrolltop-->
+	<!--end::Scrolltop-->
 	<!--begin::Global Config(global config for global JS scripts)-->
 	<script>
 		var KTAppSettings = {

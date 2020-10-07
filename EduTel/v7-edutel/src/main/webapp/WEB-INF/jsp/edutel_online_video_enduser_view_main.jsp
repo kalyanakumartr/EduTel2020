@@ -298,6 +298,8 @@ License: You must have a valid license purchased only from themeforest(the above
 	});
 	function endUserVideo()
 	{
+		$('#kt_wrapper').html("<div class='d-flex align-items-center'><i class='fa fa-circle-o-notch fa-spin fa-4x fa-fw'></i><span class='sr-only'>Loading...</span></div>");
+
 		 // AJAX request
 		$.ajax({
 			url: '${pageContext.request.contextPath}${endUserVideoURL}',
@@ -316,7 +318,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
 	function openVideo(videoId, attachmentId , videoName, videoSubject)
 	{
-		 // AJAX request
+		$('#videoModelId').modal({show:true});
+		$('.modal-body').html("<div class='d-flex align-items-center'><i class='fa fa-circle-o-notch fa-spin fa-4x fa-fw'></i><span class='sr-only'>Loading...</span></div>");
+
+		// AJAX request
 		$.ajax({
 			url: root + '/viewVideo/' + videoId +"/" + attachmentId,
 			type: 'post',
@@ -332,7 +337,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				
 				// Display Modal
 				$('#videoTitleId').text(videoSubject + ' : ' + videoName);
-				$('#videoModelId').modal({show:true});
+				
 			}
 		});
 	}
