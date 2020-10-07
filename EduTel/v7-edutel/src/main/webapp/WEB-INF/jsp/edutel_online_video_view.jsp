@@ -55,70 +55,28 @@ video::-webkit-media-controls-enclosure {
 video::-webkit-media-controls-panel {
 	width: calc(100% + 30px); /* Adjust as needed */
 }
+
+video {
+  max-width: 100%;
+  height: auto;
+}
 </style>
 </head>
-<!--end::Head-->
-<!--begin::Body-->
 <body id="kt_body">
-	<!--begin::Page-->
-	<!--end::Aside-->
-	<!--begin::Wrapper-->
-	<!--begin::Content-->
-	<!--begin::Subheader-->
-	<!--end::Subheader-->
-	<!--begin::Entry-->
 	<div class="d-flex flex-column-fluid">
-		<!--begin::Container-->
-		<div class="container">
-			<!--begin::Row-->
-			<div class="row">
-				<div class="col-lg-12">
-					<!--begin::Card-->
-					<div class="card card-custom card-stretch">
-						<div class="card-body">
-							<div class="form-group row fv-plugins-icon-container">
-								<c:set var="first" value="true" scope="page" />
-								<div class="col-lg-9">
-									<video id="tutorVideoId" width="640" height="480" controls autoplay="autoplay" controlsList="nodownload" >
-										<c:forEach items="${videoList}" var="video">
-											<c:if test="${first}">
-												<source class="active" src="${pageContext.request.contextPath}/streamVideo/${video.uploadFileFolderURL}/${video.uploadFileName}" type="video/mp4" class>
-											</c:if>
-											<c:if test="${!first}">
-												<source src="${pageContext.request.contextPath}/streamVideo/${video.uploadFileFolderURL}/${video.uploadFileName}" type="video/mp4">
-											</c:if>
-											<c:set var="first" value="false" scope="page"/>
-										</c:forEach>
-									</video>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--end::Card-->
-				</div>
-				<!--end::Card-->
-			</div>
-			<!--end::Row-->
-		</div>
-		<!--end::Container-->
+		<c:set var="first" value="true" scope="page" />
+		<video id="tutorVideoId" controls autoplay="autoplay" controlsList="nodownload" >
+			<c:forEach items="${videoList}" var="video">
+				<c:if test="${first}">
+					<source class="active" src="${pageContext.request.contextPath}/streamVideo/${video.uploadFileFolderURL}/${video.uploadFileName}" type="video/mp4" class>
+				</c:if>
+				<c:if test="${!first}">
+					<source src="${pageContext.request.contextPath}/streamVideo/${video.uploadFileFolderURL}/${video.uploadFileName}" type="video/mp4">
+				</c:if>
+				<c:set var="first" value="false" scope="page"/>
+			</c:forEach>
+		</video>
 	</div>
-	<!--end::Entry-->
-	<!--end::Content-->
-	<!--begin::Footer-->
-	<!--end::Footer-->
-	<!--end::Wrapper-->
-	<!--end::Page-->
-	<!--end::Main-->
-	<!-- begin::User Panel-->
-	<!-- end::User Panel-->
-	<!--begin::Quick Cart-->
-	<!--end::Quick Cart-->
-	<!--begin::Quick Panel-->
-	<!--end::Quick Panel-->
-	<!--begin::Chat Panel-->
-	<!--end::Chat Panel-->
-	<!--begin::Scrolltop-->
-	<!--end::Scrolltop-->
 	<!--begin::Global Config(global config for global JS scripts)-->
 	<script>
 		var KTAppSettings = {
