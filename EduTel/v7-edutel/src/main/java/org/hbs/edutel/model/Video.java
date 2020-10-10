@@ -164,7 +164,7 @@ public class Video extends CommonDateAndStatusFields implements IEduTelVideo, IC
 
 	@OneToMany(targetEntity = VideoAttachments.class, fetch = FetchType.EAGER, mappedBy = "video", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
-	@OrderBy("uploadFileName ASC")
+	@OrderBy("autoId ASC")
 	// @JsonIgnore
 	public Set<IVideoAttachments> getAttachmentList()
 	{

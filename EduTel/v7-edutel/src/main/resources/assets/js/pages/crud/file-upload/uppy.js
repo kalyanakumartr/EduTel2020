@@ -140,8 +140,7 @@ var KTUppy = function () {
 			autoProceed: true,
 			showProgressDetails: true,
 			restrictions: {
-				maxFileSize: 50000000, // 50mb //Max 500 MB , sum of all files
-										// size
+				maxFileSize: 65537000, // 50mb //Max 500 MB , sum of all files_size
 				maxNumberOfFiles: 10,
 				minNumberOfFiles: 1,
 				allowedFileTypes: ['video/*']
