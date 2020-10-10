@@ -1,6 +1,7 @@
 package org.hbs.edutel;
 
-import org.bouncycastle.util.encoders.Base64;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 	{
 		ModelAndView modelView = new ModelAndView(SEARCH_VIDEOS_PAGE);
 		modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
-		modelView.addObject("accessToken", new String(Base64.decode(accessToken)));
+		modelView.addObject("accessToken", new String(Base64.getDecoder().decode(accessToken)));
 		modelView.addObject("tokenBinder", accessToken);
 		modelView.addObject("dashBoardURL", websiteURL + "/dashBoardEmployee.do");
 		modelView.addObject("logoutURL", websiteURL + "/logoutPage.do");
@@ -71,7 +72,7 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 			modelView.addObject("dashBoardURL", websiteURL + "/dashBoardStudent.do?p=1");
 			modelView.addObject("logoutURL", websiteURL + "/logoutPage.do");
 			modelView.addObject("endUserVideoURL", "/endUserVideo/" + accessToken + "/" + subjects + "/" + whom);
-			modelView.addObject("accessToken", new String(Base64.decode(accessToken)));
+			modelView.addObject("accessToken", new String(Base64.getDecoder().decode(accessToken)));
 
 			return modelView;
 		}

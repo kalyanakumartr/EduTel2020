@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -163,6 +164,7 @@ public class Video extends CommonDateAndStatusFields implements IEduTelVideo, IC
 
 	@OneToMany(targetEntity = VideoAttachments.class, fetch = FetchType.EAGER, mappedBy = "video", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
+	@OrderBy("uploadFileName ASC")
 	// @JsonIgnore
 	public Set<IVideoAttachments> getAttachmentList()
 	{

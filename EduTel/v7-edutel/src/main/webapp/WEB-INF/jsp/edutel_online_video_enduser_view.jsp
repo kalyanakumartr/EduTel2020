@@ -91,8 +91,10 @@
 								</ul>
 								<div class="tab-content mt-5" id="myTabContent">
 									<div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+										<c:set var="found" value="false"></c:set>
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Maths'}">
+												<c:set var="found" value="true"></c:set>
 												<ul class="navi navi-hover">
 													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -101,10 +103,19 @@
 												</ul>
 											</c:if>
 										</c:forEach>
+										
+										<c:if test="${found=='false'}">
+											<ul class="navi navi-hover">
+												<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+												<li class="navi navi-separator my-3"></li>
+											</ul>
+										</c:if>
 									</div>
 									<div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+										<c:set var="found" value="false"></c:set>
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Physics'}">
+												<c:set var="found" value="true"></c:set>
 												<ul class="navi navi-hover">
 													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -113,10 +124,19 @@
 												</ul>
 											</c:if>
 										</c:forEach>
+										
+										<c:if test="${found=='false'}">
+											<ul class="navi navi-hover">
+												<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+												<li class="navi navi-separator my-3"></li>
+											</ul>
+										</c:if>
 									</div>
 									<div class="tab-pane fade" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
+										<c:set var="found" value="false"></c:set>
 										<c:forEach items="${videoList}" var="video">
 											<c:if test="${video.subject=='Chemistry'}">
+												<c:set var="found" value="true"></c:set>
 												<ul class="navi navi-hover">
 													<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 															class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -125,11 +145,20 @@
 												</ul>
 											</c:if>
 										</c:forEach>
+										
+										<c:if test="${found=='false'}">
+											<ul class="navi navi-hover">
+												<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+												<li class="navi navi-separator my-3"></li>
+											</ul>
+										</c:if>
 									</div>
 									<c:if test="${subjects!='C' || subjects=='A'}">
 										<div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4">
+											<c:set var="found" value="false"></c:set>
 											<c:forEach items="${videoList}" var="video">
 												<c:if test="${video.subject=='Botony'}">
+													<c:set var="found" value="true"></c:set>
 													<ul class="navi navi-hover">
 														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -138,10 +167,19 @@
 													</ul>
 												</c:if>
 											</c:forEach>
+											
+											<c:if test="${found=='false'}">
+												<ul class="navi navi-hover">
+													<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+													<li class="navi navi-separator my-3"></li>
+												</ul>
+											</c:if>
 										</div>
 										<div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel" aria-labelledby="kt_tab_pane_5">
+											<c:set var="found" value="false"></c:set>
 											<c:forEach items="${videoList}" var="video">
 												<c:if test="${video.subject=='Zoology'}">
+													<c:set var="found" value="true"></c:set>
 													<ul class="navi navi-hover">
 														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -150,12 +188,21 @@
 													</ul>
 												</c:if>
 											</c:forEach>
+											
+											<c:if test="${found=='false'}">
+												<ul class="navi navi-hover">
+													<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+													<li class="navi navi-separator my-3"></li>
+												</ul>
+											</c:if>
 										</div>
 									</c:if>
 									<c:if test="${subjects=='C' || subjects=='A'}">
 										<div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel" aria-labelledby="kt_tab_pane_6">
+											<c:set var="found" value="false"></c:set>
 											<c:forEach items="${videoList}" var="video">
 												<c:if test="${video.subject=='ComputerScience'}">
+													<c:set var="found" value="true"></c:set>
 													<ul class="navi navi-hover">
 														<li class="navi-item"><a class="navi-link" href="javascript:openVideo('${video.videoId}','0','${video.displayName}','${video.subject}')"> <span
 																class="navi-icon"><i class="fas fa-video text-danger"></i></span> <span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">${video.displayName} </span><span class="navi-label"> taught by ${video.tutorName}</span>
@@ -164,6 +211,13 @@
 													</ul>
 												</c:if>
 											</c:forEach>
+											
+											<c:if test="${found=='false'}">
+												<ul class="navi navi-hover">
+													<li class="navi-item"><span class="navi-text text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">No Tutor videos available at this moment.</span></li>
+													<li class="navi navi-separator my-3"></li>
+												</ul>
+											</c:if>
 										</div>
 									</c:if>
 								</div>
