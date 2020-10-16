@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,30 +63,28 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 	MessageSource				messageSource;
 
 	@Override
-	public ResponseEntity<?> processUpload(@PathVariable("random") String random, @RequestParam("files[]") MultipartFile[] files)
+	public ResponseEntity<?> processUpload(Authentication auth, @PathVariable("random") String random, @RequestParam("files[]") MultipartFile[] files)
 	{
-		for (MultipartFile multiFile : files)
+		try
 		{
-			try
+			String baseFolder = serverTempDirectory + SLASH + EAuth.User.getUserId(auth) + SLASH + random;
+			File folder = new File(baseFolder);
+			if (!folder.exists())
+				folder.mkdirs();
+
+			for (MultipartFile multiFile : files)
 			{
-				File folder = new File(serverTempDirectory + SLASH + random);
-
-				if (!folder.exists())
-					folder.mkdirs();
-				String absolutePath = random + SLASH + multiFile.getOriginalFilename();
-
+				String absolutePath = baseFolder + SLASH + multiFile.getOriginalFilename();
 				InputStream is = multiFile.getInputStream();
-				Files.copy(is, Paths.get(serverTempDirectory + SLASH + absolutePath), StandardCopyOption.REPLACE_EXISTING);
-
+				Files.copy(is, Paths.get(absolutePath), StandardCopyOption.REPLACE_EXISTING);
 			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		}
-		return new ResponseEntity<>("success", HttpStatus.OK);
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
@@ -272,6 +271,57 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 		}
 	}
 
+	// @Override
+	public ResponseEntity<StreamingResponseBody> streamVideoNew(final HttpServletResponse response, @RequestHeader(value = "Range", required = false) String range, String videoPath, String videoName)
+	{
+
+		try
+		{
+			final Long fileSize = getFileSize(videoPath, videoName);
+			if (range == null)
+			{
+				StreamingResponseBody stream = out -> {
+					response.getOutputStream().write(readByteRange(videoPath, videoName, 0, fileSize - 1));
+					response.setContentType(VIDEO_CONTENT);
+					response.setContentLengthLong(fileSize);
+				};
+				return new ResponseEntity<StreamingResponseBody>(stream, HttpStatus.OK);
+			}
+			else
+			{
+				StreamingResponseBody stream = out -> {
+					String[] ranges = range.split("-");
+					long rangeStart = Long.parseLong(ranges[0].substring(6)); // bytes=0-
+					long rangeEnd;
+					if (ranges.length > 1)
+					{
+						rangeEnd = Long.parseLong(ranges[1]);
+					}
+					else
+					{
+						rangeEnd = fileSize - 1;
+					}
+					if (fileSize < rangeEnd)
+					{
+						rangeEnd = fileSize - 1;
+					}
+					response.getOutputStream().write(readByteRange(videoPath, videoName, rangeStart, rangeEnd));
+					response.setContentType(VIDEO_CONTENT);
+					response.setContentLengthLong((rangeEnd - rangeStart) + 1);
+					response.setHeader(ACCEPT_RANGES, BYTES);
+					response.setHeader(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize);
+
+				};
+
+				return new ResponseEntity<StreamingResponseBody>(stream, HttpStatus.PARTIAL_CONTENT);
+			}
+		}
+		catch (Exception e)
+		{
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
 	@Override
 	public ResponseEntity<byte[]> streamVideo(final HttpServletResponse response, @RequestHeader(value = "Range", required = false) String range, String videoPath, String videoName)
 	{
@@ -346,7 +396,7 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 		Path path = Paths.get(getFilePath(videoPath), filename);
 		try (InputStream inputStream = (Files.newInputStream(path)); ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream())
 		{
-			byte[] data = new byte[4096];
+			byte[] data = new byte[8198];
 			int nRead;
 			while ( (nRead = inputStream.read(data, 0, data.length)) != -1 )
 			{
@@ -354,9 +404,26 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 			}
 			bufferedOutputStream.flush();
 			byte[] result = new byte[(int) (end - start) + 1];
-			System.arraycopy(bufferedOutputStream.toByteArray(), (int) start, result, 0, result.length);
-			return result;
+
+			try
+			{
+				System.arraycopy(bufferedOutputStream.toByteArray(), (int) start, result, 0, result.length);
+				return result;
+			}
+			finally
+			{
+				if (inputStream != null)
+				{
+					inputStream.close();
+				}
+				if (bufferedOutputStream != null)
+				{
+					bufferedOutputStream.close();
+				}
+
+			}
 		}
+
 	}
 
 	@Override
@@ -378,18 +445,18 @@ public class MediaRestController extends MediaControllerBase implements IMediaRe
 
 			UserRoles _UR = new UserRoles();
 			_UR.setUsers(ufBean.formUser);
-			
-			if(ufBean.formUser.getUserType() == EUserType.Consumer)
+
+			if (ufBean.formUser.getUserType() == EUserType.Consumer)
 				_UR.setRoles(new Roles(ERole.Consumer.name()));
 			else
 				_UR.setRoles(new Roles(ERole.Employee.name()));
-			
+
 			ufBean.formUser.getUserRoleses().add(_UR);
 
 			ufBean.user = videoBo.saveUser(ufBean.formUser);
-			
+
 			return new ResponseEntity<>(EReturn.Success, HttpStatus.OK);
-			
+
 		}
 		catch (Exception excep)
 		{

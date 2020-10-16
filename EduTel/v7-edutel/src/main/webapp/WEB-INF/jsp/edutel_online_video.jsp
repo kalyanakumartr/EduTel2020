@@ -163,7 +163,7 @@
 											<div class="uppy-status"></div>
 											<div class="uppy-informer uppy-informer-min"></div>
 										</div>
-										<span class="form-text text-muted">Max file size is 50MB and max number of files is 10.</span>
+										<span class="form-text text-muted">Max file size is 100MB and max number of files is 10.</span>
 										<div id="file-select" class="fv-plugins-message-container" style="display: none;">
 											<div class="fv-help-block">Please select a video file(s).</div>
 										</div>

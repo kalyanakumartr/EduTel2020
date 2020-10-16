@@ -4,6 +4,7 @@ import org.hbs.core.beans.APIStatus;
 import org.hbs.edutel.model.Video;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -17,12 +18,14 @@ public class VideoFormBean extends APIStatus
 	public Video				video				= new Video();
 	public Video				repoVideo			= new Video();
 	public String[]				uploadedFiles;
+	public String				folderPath			= null;
 
 	public VideoFormBean(Video video)
 	{
 		random = System.currentTimeMillis() + "";
 		this.video = video;
 	}
+
 	public VideoFormBean(String videoId)
 	{
 		random = System.currentTimeMillis() + "";
@@ -86,6 +89,17 @@ public class VideoFormBean extends APIStatus
 	public void setUploadedFiles(String[] uploadedFiles)
 	{
 		this.uploadedFiles = uploadedFiles;
+	}
+
+	@JsonIgnore
+	public String getFolderPath()
+	{
+		return folderPath;
+	}
+
+	public void setFolderPath(String folderPath)
+	{
+		this.folderPath = folderPath;
 	}
 
 	public void updateRepoVideo(Authentication auth)

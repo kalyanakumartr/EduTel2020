@@ -43,8 +43,6 @@ public class WebMvcConfig implements WebMvcConfigurer, IConstProperty, IPathEduT
 			{
 				resource = resources.split(HASH);
 				registry.addResourceHandler(SLASH + resource[0].trim() + SLASH_STARS).addResourceLocations(resource[1].trim());
-				System.out.println(">>>>>>>>>>>>>>>>>>resource[0].trim() >>>>>>>>>>>>>>>>>>>> " + resource[0].trim() );
-				System.out.println(">>>>>>>>>>>>>>>>>>resource[1].trim() >>>>>>>>>>>>>>>>>>>> " + resource[1].trim() );
 			}
 		}
 	}

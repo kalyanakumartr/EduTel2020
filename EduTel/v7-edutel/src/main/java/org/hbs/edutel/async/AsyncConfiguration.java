@@ -1,7 +1,5 @@
-package org.hbs.security.resource;
+package org.hbs.edutel.async;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +14,6 @@ import org.springframework.web.context.request.async.CallableProcessingIntercept
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.util.concurrent.Callable;
 
 @Configuration
@@ -24,14 +21,10 @@ import java.util.concurrent.Callable;
 @EnableScheduling
 public class AsyncConfiguration implements AsyncConfigurer
 {
-
-	private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
-
 	@Override
 	@Bean(name = "taskExecutor")
 	public AsyncTaskExecutor getAsyncExecutor()
 	{
-		log.debug("Creating Async Task Executor");
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(5);
 		executor.setMaxPoolSize(10);
@@ -67,7 +60,6 @@ public class AsyncConfiguration implements AsyncConfigurer
 			@Override
 			public <T> Object handleTimeout(NativeWebRequest request, Callable<T> task) throws Exception
 			{
-				log.error("timeout!");
 				return super.handleTimeout(request, task);
 			}
 		};

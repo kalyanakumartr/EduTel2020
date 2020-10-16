@@ -133,14 +133,14 @@ var KTUppy = function () {
 		var id = '#' + elemId;
 		var $statusBar = $(id + ' .uppy-status');
 		var $uploadedList = $(id + ' .uppy-list');
-		var timeout;
+		var timeout = 10000;
 
 		var uppyMin = Uppy.Core({
 			debug: true,
 			autoProceed: true,
 			showProgressDetails: true,
 			restrictions: {
-				maxFileSize: 65537000, // 50mb //Max 500 MB , sum of all files_size
+				maxFileSize: 655370000, // 50mb //Max 500 MB , sum of all files_size
 				maxNumberOfFiles: 10,
 				minNumberOfFiles: 1,
 				allowedFileTypes: ['video/*']
@@ -162,6 +162,7 @@ var KTUppy = function () {
 			  fieldName: 'files[]',
 			  responseType:"application/json",
 			  headers: { "Authorization": 'Bearer ' + access_token },
+			  limit: 5
 		}),
 		uppyMin.use(StatusBar, {
 			target: id + ' .uppy-status',
@@ -184,6 +185,18 @@ var KTUppy = function () {
 		uppyMin.on('upload-success', (file, response) => {
 			 // alert(JSON.stringify(response)); // HTTP status code
 			  // response.body // extracted response data
+			 console.log('successfully uploaded...');
+		});
+		
+		uppyMin.on('upload-error', (file, error, response) => {
+			  console.log('error with file:', file.id)
+			  console.log('error message:', error);
+			  
+			  uppyMin.removeFile(file.id);
+			  
+			  $fileLabel.text("Add more files");
+			  $statusBar.addClass('uppy-status-hidden');
+			  $statusBar.removeClass('uppy-status-ongoing');
 		});
 
 		uppyMin.on('complete', function(file) {

@@ -174,29 +174,29 @@ var KTDatatableVideo = function() {
         						sizeLabel = " MB";
         					}
         				}
-        				if(i % 3 == 0)
+        				if(i % 2 == 0)
         					videoList += "<div class='row'>"	;
                 		
         				videoList += 
-                		"<div class='col-md-4'><div class='d-flex flex-wrap align-items-center mb-10'style='width: max-content'>" + 
-                		"<div class='symbol symbol-60 symbol-2by3 flex-shrink-0'>" +
-                		"<div class='symbol-label'><i class='fas fa-video text-primary icon-2x'></i></div></div>" + 
-                		"<div class='d-flex flex-column ml-4 flex-grow-1 mr-2'>" + 
-                		"<a href=\"javascript:openVideo(\'" + row.videoId + "\',\'" + row.attachmentList[i].autoId + "\',\'" + row.displayName + "\',\'" + row.subject + "\')\" class='text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1'>" + row.attachmentList[i].uploadFileName + "</a>" + 
-                		"<span class='text-muted font-weight-bold'>Size: "+ Math.round(filesize, 2) + sizeLabel + "</span></div>" + 
-                		"<span class='mt-lg-0 mb-lg-0 my-2 font-weight-bold py-4'><i class='fas fa-times-circle text-danger mr-5 align-items-right'></i></span>" + 
+                		"<div class='col-md-6'><div class='d-flex flex-wrap align-items-center mb-10'style='width: max-content'>" + 
+                		"<div class='symbol symbol-30 symbol-2by3 flex-shrink-0'>" +
+                		"<div class='symbol-label'><i class='fas fa-video text-danger'></i></div></div>" + 
+                		"<div class='d-flex flex-column ml-6 flex-grow-1 mr-2'>" + 
+                		"<a href=\"javascript:openVideo(\'" + row.videoId + "\',\'" + row.attachmentList[i].autoId + "\',\'" + row.displayName + "\',\'" + row.subject + "\')\" class='text-hover-primary mb-1'>" + row.attachmentList[i].uploadFileName + "</a>" + 
+                		"<span class='text-muted'>Size: "+ Math.round(filesize, 2) + sizeLabel + "</span></div>" + 
+                		//"<span class='mt-lg-0 mb-lg-0 my-2 font-weight-bold py-4'><i class='fas fa-times-circle text-danger mr-5 align-items-right'></i></span>" + 
                 		"</div></div>";
         				
-        				if(i % 3 == 2)
+        				if(i % 2 == 1)
         					videoList += "</div>"	
 
                 	}
                 	
                 	if(row.attachmentList.length == 1)
-    					videoList += "<div class='col-md-4' style='z-index:-100'>&nbsp;</div><div class='col-md-4' style='z-index:-100'>&nbsp;</div></div>";
+    					videoList += "<div class='col-md-6' style='z-index:-100'>&nbsp;</div><div class='col-md-4' style='z-index:-100'>&nbsp;</div></div>";
     						
-                	if(row.attachmentList.length == 2)
-    					videoList += "<div class='col-md-4' style='z-index:-100'>&nbsp;</div></div>";
+                	//if(row.attachmentList.length == 2)
+    					//videoList += "<div class='col-md-4' style='z-index:-100'>&nbsp;</div></div>";
     				
                 	
                     return videoList + "</div></div>" ;

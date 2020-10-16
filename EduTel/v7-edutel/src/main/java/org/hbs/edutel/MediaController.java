@@ -18,12 +18,22 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 	private String				tutorList;
 
 	@Override
-	public ModelAndView preAddVideo()
+	public ModelAndView preAddVideo(Authentication auth)
 	{
-		ModelAndView modelView = new ModelAndView(ADD_VIDEOS_PAGE);
-		modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
-		modelView.addObject("mediaForm", new VideoFormBean());
-		return modelView;
+		try
+		{
+			ModelAndView modelView = new ModelAndView(ADD_VIDEOS_PAGE);
+			modelView.addObject("tutorList", StringUtils.trimArrayElements(tutorList.split(COMMA_SPACE.trim())));
+			modelView.addObject("mediaForm", new VideoFormBean());
+			
+			return modelView;
+		}
+		finally
+		{
+			String folder = serverTempDirectory + SLASH + EAuth.User.getUserId(auth);
+			videoBo.cleanAndDelete(folder);
+		}
+		
 	}
 
 	@Override
@@ -37,6 +47,7 @@ public class MediaController extends MediaControllerBase implements IMediaContro
 		modelView.addObject("logoutURL", websiteURL + "/logoutPage.do");
 		modelView.addObject("preSearchVideoURL", "/preSearchVideo/" + accessToken);
 		return modelView;
+		
 	}
 
 	@Override

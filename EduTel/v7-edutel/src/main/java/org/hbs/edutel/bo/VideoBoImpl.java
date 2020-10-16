@@ -47,10 +47,16 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 	private int					updateDelay;
 
 	@Autowired
-	protected VideoDao			videoDao;
-	
-	@Autowired
 	protected UserDao			userDao;
+
+	@Autowired
+	protected VideoDao			videoDao;
+
+	@Override
+	public List<Video> allVideo() throws InvalidRequestException
+	{
+		return videoDao.getVideoList();
+	}
 
 	@Override
 	public EnumInterface blockVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException
@@ -79,12 +85,88 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 	}
 
 	@Override
+	public void cleanAndDelete(final String folder)
+	{
+		new Thread(new Runnable() {
+
+			@Override
+			public void run()
+			{
+				try
+				{
+					File file = new File(folder);
+
+					if (file != null && file.exists())
+					{
+						FileUtils.cleanDirectory(file);
+						file.delete();
+					}
+				}
+				catch (Exception e)
+				{
+					System.out.println(">>>>>>NOT Able to clean folder>>>>>>>>> " + folder);
+				}
+
+			}
+		}).start();
+	}
+
+	private void createVideoAttachments(Authentication auth, VideoFormBean vfBean) throws IOException
+	{
+		String baseFolder = serverTempDirectory + SLASH + EAuth.User.getUserId(auth);
+		vfBean.folderPath = baseFolder + SLASH + vfBean.random; // Helps to clean folder on exception
+		
+		File srcFolder = new File(vfBean.folderPath);
+		File destFolder = new File(serverVideoDirectory + SLASH + vfBean.random);
+
+		if (!destFolder.exists())
+			destFolder.mkdirs();
+
+		VideoAttachments _VATT = null;
+		File[] uploadedFileList = srcFolder.listFiles();
+		sortFileByNumberEndsWith(uploadedFileList);
+
+		if (CommonValidator.isArrayFirstNotNull(uploadedFileList))
+		{
+			List<String> fileList = Arrays.asList(vfBean.uploadedFiles);
+			
+			for (File file : uploadedFileList)
+			{
+				if (file.isFile() && fileList.contains(file.getName()))
+				{
+					Path srcPath = Paths.get(baseFolder, vfBean.random, file.getName());
+					Path destPath = Paths.get(serverVideoDirectory, vfBean.random, file.getName());
+
+					Files.copy(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
+					_VATT = new VideoAttachments();
+					_VATT.createdUserAndProducerInfo(auth);
+					_VATT.setStatus(true);
+					_VATT.setUploadFileName(file.getName());
+					_VATT.setUploadFileSize(file.length());
+					_VATT.setUploadFileFolderURL(vfBean.random);
+					_VATT.setUploadResourceHandler(serverResourceHandler.trim());
+					_VATT.setVideo(vfBean.video);
+					vfBean.video.getAttachmentList().add(_VATT);
+				}
+			}
+		}
+	}
+
+	@Override
 	public EnumInterface deleteVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException
 	{
 		if (isRecentlyUpdated(auth, vfBean))
 		{
+
 			try
 			{
+				if (CommonValidator.isSetFirstNotEmpty(vfBean.repoVideo.getAttachmentList()))
+				{
+					String folder = vfBean.repoVideo.getAttachmentList().iterator().next().getUploadFileFolderURL();
+					folder = serverVideoDirectory + SLASH + folder;
+					
+					cleanAndDelete(folder);
+				}
 				// logger.info("Inside VideoBoImpl blockVideo ::: ", vfBean.user.getVideoId());
 				videoDao.delete(vfBean.repoVideo);
 
@@ -99,6 +181,12 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 			}
 		}
 		throw new InvalidRequestException(VIDEO_DATA_UPDATED_RECENTLY);
+	}
+
+	@Override
+	public Video getVideoById(VideoFormBean vfBean)
+	{
+		return videoDao.findById(vfBean.video.getVideoId()).get();
 	}
 
 	@Override
@@ -130,122 +218,43 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 	}
 
 	@Override
-	public EnumInterface saveVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException, InvalidKeyException, IOException
+	public Users saveUser(Users formUser)
+	{
+		return userDao.save(formUser);
+	}
+
+	@Override
+	public EnumInterface saveVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException, InvalidKeyException
 	{
 		List<String> videoNameList = videoDao.checkVideoName(vfBean.video.getDisplayName(), vfBean.video.getSubject());
 		if (videoNameList == null || videoNameList.isEmpty())
 		{
-			vfBean.video.createdUserAndProducerInfo(auth);
-			vfBean.video.setStatus(false);
-			vfBean.video.setVideoId(vfBean.video.getBusinessKey());
-
-			File srcFolder = createVideoAttachments(auth, vfBean);
-
-			vfBean.video = videoDao.save(vfBean.video);
-
-			if (CommonValidator.isNotNullNotEmpty(vfBean.video))
+			try
 			{
-				vfBean.clearForm();
-				vfBean.messageCode = VIDEO_CREATED_SUCCESSFULLY;
-				try
+				vfBean.video.createdUserAndProducerInfo(auth);
+				vfBean.video.setStatus(false);
+				vfBean.video.setVideoId(vfBean.video.getBusinessKey());
+				
+				createVideoAttachments(auth, vfBean);
+				
+				vfBean.video = videoDao.save(vfBean.video);
+				if (CommonValidator.isNotNullNotEmpty(vfBean.video))
 				{
-					if (srcFolder != null && srcFolder.exists())
-					{
-						FileUtils.cleanDirectory(srcFolder);
-						srcFolder.delete();
-					}
-
-				}
-				catch (Exception e)
-				{
-				}
-				return EReturn.Success;
+					vfBean.clearForm();
+					vfBean.messageCode = VIDEO_CREATED_SUCCESSFULLY;
+					return EReturn.Success;
+				} 
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				cleanAndDelete(vfBean.folderPath); // On any scenario, we will get temporary folder to delete
 			}
 		}
 		throw new InvalidKeyException(VIDEO_ALREADY_EXISTS);
-	}
-
-	private File createVideoAttachments(Authentication auth, VideoFormBean vfBean) throws IOException
-	{
-		List<String> fileList = Arrays.asList(vfBean.uploadedFiles);
-
-		System.out.println(">>>>>>>>>>>>>>>addVideo>>>>>>>>>>>> ");
-
-		File srcFolder = new File(serverTempDirectory + SLASH + vfBean.random);
-		File destFolder = new File(serverVideoDirectory + SLASH + vfBean.random);
-
-		if (!destFolder.exists())
-			destFolder.mkdirs();
-
-		VideoAttachments _VATT = null;
-		File[] uploadedFileList = srcFolder.listFiles();
-		sortFileByNumberEndsWith(uploadedFileList);
-
-		for (File file : uploadedFileList)
-		{
-			if (file.isFile() && fileList.contains(file.getName()))
-			{
-				Path srcPath = Paths.get(serverTempDirectory, vfBean.random, file.getName());
-				Path destPath = Paths.get(serverVideoDirectory, vfBean.random, file.getName());
-
-				Files.copy(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
-				_VATT = new VideoAttachments();
-				_VATT.createdUserAndProducerInfo(auth);
-				_VATT.setStatus(true);
-				_VATT.setUploadFileName(file.getName());
-				_VATT.setUploadFileSize(file.length());
-				_VATT.setUploadFileFolderURL(vfBean.random);
-				_VATT.setUploadResourceHandler(serverResourceHandler.trim());
-				_VATT.setVideo(vfBean.video);
-				vfBean.video.getAttachmentList().add(_VATT);
-			}
-		}
-		return srcFolder;
-	}
-
-	 public void sortFileByNumberEndsWith(File[] files) {
-	        Arrays.sort(files, new Comparator<File>() {
-	            @Override
-	            public int compare(File o1, File o2) {
-	                int n1 = extractNumber(o1.getName());
-	                int n2 = extractNumber(o2.getName());
-	                return n1 - n2;
-	            }
-
-	            private int extractNumber(String name) {
-	                int i = 0;
-	                try {
-	                    int s = name.lastIndexOf('_')+1;
-	                    int e = name.lastIndexOf('.');
-	                    String number = name.substring(s, e);
-	                    i = Integer.parseInt(number);
-	                } catch(Exception e) {
-	                    i = 0; // if filename does not match the format
-	                           // then default to 0
-	                }
-	                return i;
-	            }
-	        });
-
-	        for(File f : files) {
-	            System.out.println(f.getName());
-	        }
-	    }
-	 
-	@Override
-	public EnumInterface updateVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException, InvalidKeyException
-	{
-		if (isRecentlyUpdated(auth, vfBean))
-		{
-			// logger.info("VideoBoImpl updateVideo starts ::: ");
-			vfBean.updateRepoVideo(auth);
-			videoDao.save(vfBean.video);
-			vfBean.clearForm();
-			vfBean.messageCode = VIDEO_UPDATED_SUCCESSFULLY;
-			// logger.info("VideoBoImpl updateVideo ends ::: ");
-			return EReturn.Success;
-		}
-		throw new InvalidRequestException(VIDEO_DATA_UPDATED_RECENTLY);
 	}
 
 	@Override
@@ -260,22 +269,56 @@ public class VideoBoImpl implements VideoBo, IErrorEduTel, IPath
 		return videoDao.getVideoCount(dataTable.meta.query);
 	}
 
-	@Override
-	public Video getVideoById(VideoFormBean vfBean)
+	public void sortFileByNumberEndsWith(File[] files)
 	{
-		return videoDao.findById(vfBean.video.getVideoId()).get();
+		Arrays.sort(files, new Comparator<File>() {
+			@Override
+			public int compare(File o1, File o2)
+			{
+				int n1 = extractNumber(o1.getName());
+				int n2 = extractNumber(o2.getName());
+				return n1 - n2;
+			}
+
+			private int extractNumber(String name)
+			{
+				int i = 0;
+				try
+				{
+					int s = name.lastIndexOf('_') + 1;
+					int e = name.lastIndexOf('.');
+					String number = name.substring(s, e);
+					i = Integer.parseInt(number);
+				}
+				catch (Exception e)
+				{
+					i = 0; // if filename does not match the format
+							// then default to 0
+				}
+				return i;
+			}
+		});
+
+		for (File f : files)
+		{
+			System.out.println(f.getName());
+		}
 	}
 
 	@Override
-	public List<Video> allVideo() throws InvalidRequestException
+	public EnumInterface updateVideo(Authentication auth, VideoFormBean vfBean) throws InvalidRequestException, InvalidKeyException
 	{
-		return videoDao.getVideoList();
-	}
-
-	@Override
-	public Users saveUser(Users formUser)
-	{
-		return userDao.save(formUser);
+		if (isRecentlyUpdated(auth, vfBean))
+		{
+			// logger.info("VideoBoImpl updateVideo starts ::: ");
+			vfBean.updateRepoVideo(auth);
+			videoDao.save(vfBean.video);
+			vfBean.clearForm();
+			vfBean.messageCode = VIDEO_UPDATED_SUCCESSFULLY;
+			// logger.info("VideoBoImpl updateVideo ends ::: ");
+			return EReturn.Success;
+		}
+		throw new InvalidRequestException(VIDEO_DATA_UPDATED_RECENTLY);
 	}
 
 }

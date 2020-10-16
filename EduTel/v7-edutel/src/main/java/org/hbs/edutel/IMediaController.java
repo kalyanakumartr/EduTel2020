@@ -13,7 +13,7 @@ public interface IMediaController extends IPathEduTel
 {
 	@GetMapping(path = PRE_ADD_VIDEOS)
 	@PreAuthorize(HAS_AUTHORITY_BOTH)
-	ModelAndView preAddVideo();
+	ModelAndView preAddVideo(Authentication auth);
 	
 	@GetMapping(path = PRESEARCH_VIDEOS)
 	//@PreAuthorize(HAS_AUTHORITY_BOTH)

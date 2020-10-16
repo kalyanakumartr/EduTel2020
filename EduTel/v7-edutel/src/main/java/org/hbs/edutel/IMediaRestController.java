@@ -26,7 +26,7 @@ public interface IMediaRestController extends IPathEduTel
 	@PostMapping
 	@RequestMapping(value = TEMP_UPLOAD)
 	@PreAuthorize(HAS_AUTHORITY_BOTH)
-	ResponseEntity<?> processUpload(@PathVariable String random, @RequestParam("files") MultipartFile[] files);
+	ResponseEntity<?> processUpload(Authentication auth, @PathVariable String random, @RequestParam("files") MultipartFile[] files);
 	
 	@PostMapping
 	@RequestMapping(value = ADD_EDUTEL_USER, produces = MediaType.APPLICATION_JSON_VALUE)

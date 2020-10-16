@@ -296,6 +296,12 @@ License: You must have a valid license purchased only from themeforest(the above
 	jQuery(document).ready(function() {
 		endUserVideo();
 	});
+	
+	$("[data-toggle='modal']").click(function (e) {
+    		e.preventDefault();
+    		e.stopPropagation();
+	});
+
 	function endUserVideo()
 	{
 		$('#kt_wrapper').html("<div class='d-flex align-items-center'><i class='fa fa-circle-o-notch fa-spin fa-4x fa-fw'></i><span class='sr-only'>Loading...</span></div>");

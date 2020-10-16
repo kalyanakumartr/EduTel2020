@@ -34,4 +34,6 @@ public interface VideoBo extends Serializable
 	Video getVideoById(VideoFormBean vfBean);
 
 	Users saveUser(Users formUser);
+
+	void cleanAndDelete(String folder);
 }
